@@ -3,6 +3,9 @@
 try:
 	import tkinter as tk
 	from tkinter import ttk
+	import RPi.GPIO as GPIO
+	import sys
+	from mfrc522 import SimpleMFRC522
 except ImportError:
 	# Python 2
 	import Tkinter as tk
@@ -138,9 +141,9 @@ class TkGUI(tk.Tk):
 			number = int(self.display.get())
 			self.visor.insert('1.0', 'Passe o cartao onde sera debitado\n')
 			numlines = self.visor.index('end - 1 line').split('.')[0]
-			for c in range(10):
-				msg = msg = '.'
-				self.visor.insert('end', msg)
+			reader = SimpleMFRC522()
+			id, text = reader.read()
+			self.visor.insert('end', id)
 		else:
 			self.visor.delete('1.0', '2.0')
 			self.visor.insert('1.0', 'Insira o valor')
