@@ -166,6 +166,7 @@ class TkGUI(tk.Tk):
 
 	def clear_all(self, new_operation=True):
 		"""clears all the content in the Entry widget."""
+		self.visor.delete('1.0', '2.0')
 		self.display.delete(0, tk.END)
 		self.NEW_OPERATION = new_operation
 
