@@ -142,8 +142,12 @@ class TkGUI(tk.Tk):
 			number = int(self.display.get())
 			self.visor.insert('1.0', 'Passe o cartao onde sera debitado\n')
 			numlines = self.visor.index('end - 1 line').split('.')[0]
-			reader = SimpleMFRC522()
-			id, text = reader.read()
+			try:
+				id, text = reader.read()
+				print(id)
+
+			finally:
+				GPIO.cleanup()
 			self.visor.insert('end', id)
 		else:
 			self.visor.delete('1.0', '2.0')
