@@ -15,6 +15,7 @@ from icons import icon_string
 import RPi.GPIO as GPIO
 import sys
 from mfrc522 import SimpleMFRC522
+import requests
 
 
 class TkGUI(tk.Tk):
@@ -103,12 +104,12 @@ class TkGUI(tk.Tk):
 		result = tk.Button(self, text="=", command=self.calculate, font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
 		result.grid(row=6, column=2)
 
-		plus = tk.Button(self, text="Credito", command=lambda: self.credit(self.display.get()), font=self.FONT_MED, width='6', height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
+		plus = tk.Button(self, text="Transfer", command=lambda: self.credit(self.display.get()), font=self.FONT_MED, width='6', height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
 		plus.grid(row=3, column=3)
-		minus = tk.Button(self, text="Debito", command=lambda: self.get_operation("-"), font=self.FONT_MED, width='6', height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
+		minus = tk.Button(self, text="Titulos", command=lambda: self.get_operation("-"), font=self.FONT_MED, width='6', height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
 		minus.grid(row=4, column=3)
 		multiply = tk.Button(
-			self, text="*", command=lambda: self.get_operation("*"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
+			self, text="*", command=lambda: self.get_operation("Hipoteca"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
 		multiply.grid(row=5, column=3)
 		divide = tk.Button(
 			self, text="/", command=lambda:  self.get_operation("/"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
@@ -138,18 +139,29 @@ class TkGUI(tk.Tk):
 
 	def credit(self, value):
 		if self.display.get():
+			update_account = '6000121'
+			dest_account = '6000122'
+			value = '50000'
 			self.visor.delete('1.0', '2.0')
 			number = int(self.display.get())
 			self.visor.insert('1.0', 'Passe o cartao onde sera debitado\n')
 			numlines = self.visor.index('end - 1 line').split('.')[0]
-			reader = SimpleMFRC522()
-			try:
-				id, text = reader.read()
-				print(id)
+			data = {'transaction': 'W',
+				 'update_account': update_account,
+				 'dest_account': dest_account,
+				 'value': value}
+			r = requests.post(url=API_ENDPOINT, data=data1)
+			if r.status_code == '201'
+				self.visor.delete('1.0', '2.0')
+				self.visor.insert('1.0', 'Transferencia efetuada!')
+		#reader = SimpleMFRC522()
+			#try:
+			#	id, text = reader.read()
+			#	print(id)
 
-			finally:
-				GPIO.cleanup()
-			self.visor.insert('end', id)
+			#finally:
+			#	GPIO.cleanup()
+			#self.visor.insert('end', id)
 		else:
 			self.visor.delete('1.0', '2.0')
 			self.visor.insert('1.0', 'Insira o valor')
