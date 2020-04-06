@@ -142,6 +142,7 @@ class TkGUI(tk.Tk):
 			number = int(self.display.get())
 			self.visor.insert('1.0', 'Passe o cartao onde sera debitado\n')
 			numlines = self.visor.index('end - 1 line').split('.')[0]
+			reader = SimpleMFRC522()
 			try:
 				id, text = reader.read()
 				print(id)
