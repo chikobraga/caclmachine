@@ -3,9 +3,7 @@
 try:
 	import tkinter as tk
 	from tkinter import ttk
-	import RPi.GPIO as GPIO
-	import sys
-	from mfrc522 import SimpleMFRC522
+
 except ImportError:
 	# Python 2
 	import Tkinter as tk
@@ -14,6 +12,9 @@ except ImportError:
 import parser
 import base64
 from icons import icon_string
+import RPi.GPIO as GPIO
+import sys
+from mfrc522 import SimpleMFRC522
 
 
 class TkGUI(tk.Tk):
