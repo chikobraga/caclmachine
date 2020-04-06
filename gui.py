@@ -139,6 +139,7 @@ class TkGUI(tk.Tk):
 
 	def credit(self, value):
 		if self.display.get():
+			API_ENDPOINT = "http://34.95.207.226/api/transaction/"
 			update_account = '6000121'
 			dest_account = '6000122'
 			value = '50000'
@@ -150,8 +151,8 @@ class TkGUI(tk.Tk):
 				 'update_account': update_account,
 				 'dest_account': dest_account,
 				 'value': value}
-			r = requests.post(url=API_ENDPOINT, data=data1)
-			if r.status_code == '201'
+			r = requests.post(url=API_ENDPOINT, data=data)
+			if r.status_code == '201':
 				self.visor.delete('1.0', '2.0')
 				self.visor.insert('1.0', 'Transferencia efetuada!')
 		#reader = SimpleMFRC522()
