@@ -140,29 +140,32 @@ class TkGUI(tk.Tk):
 	def credit(self, value):
 		if self.display.get():
 			API_ENDPOINT = "http://34.95.207.226/api/transaction/"
-			update_account = '6000121'
-			dest_account = '6000122'
-			value = '50000'
+
+			value = self.display.get():
 			self.visor.delete('1.0', '2.0')
 			number = int(self.display.get())
 			self.visor.insert('1.0', 'Passe o cartao onde sera debitado\n')
-			numlines = self.visor.index('end - 1 line').split('.')[0]
-			data = {'transaction': 'W',
-				 'update_account': update_account,
-				 'dest_account': dest_account,
-				 'value': value}
+			reader = SimpleMFRC522()
+			try:
+				id, text = reader.read()
+				update_account = id
+
+			finally:
+				GPIO.cleanup()
+
+			self.visor.insert('1.0', 'Passe o cartao onde sera creditado\n')
+			try:
+				id2, text = reader.read()
+				dest_account = id2
+
+			finally:
+				GPIO.cleanup()
+
+			data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': value}
 			r = requests.post(url=API_ENDPOINT, data=data)
 			if r.status_code == '201':
 				self.visor.delete('1.0', '2.0')
 				self.visor.insert('1.0', 'Transferencia efetuada!')
-		#reader = SimpleMFRC522()
-			#try:
-			#	id, text = reader.read()
-			#	print(id)
-
-			#finally:
-			#	GPIO.cleanup()
-			#self.visor.insert('end', id)
 		else:
 			self.visor.delete('1.0', '2.0')
 			self.visor.insert('1.0', 'Insira o valor')
