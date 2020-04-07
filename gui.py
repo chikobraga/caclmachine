@@ -151,11 +151,13 @@ class TkGUI(tk.Tk):
 				self.visor.insert('end', 'Passe o cartao onde sera creditado\n')
 				id2 = id
 				while id2 == id:
+					numlines = self.visor.index('end - 1 line').split('.')[0]
+					if numlines==12:
+						self.visor.delete(1.0,2.0)
+					if self.visor.index('end','\n')
 					id2, text = reader.read()
-					self.visor.insert('end', id2)
+					self.visor.insert('end', id2.'\n')
 					self.visor.insert('end', 'Passa um cartao diferente \n')
-
-
 			finally:
 				GPIO.cleanup()
 
