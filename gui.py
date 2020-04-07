@@ -157,7 +157,7 @@ class TkGUI(tk.Tk):
             r = requests.post(url=API_ENDPOINT, data=data)
             if r.status_code == 201:
                 texto = str(self.NUMBER)
-                texto = "Transferencia de "+texto+" efetuada!"
+                texto = "Transferencia de $"+texto+" efetuada!"
                 self.print_visor(texto)
                 self.CONTA1 = ''
                 self.CONTA2 = ''
@@ -171,7 +171,7 @@ class TkGUI(tk.Tk):
             self.CONTA1 = ''
             self.CONTA2 = ''
             self.NUMBER = 0
-            self.print_visor("Nao foi possivel transferir")
+            self.print_visor("Nao foi possivel transferir, as contas devem ser diferentes")
 
 
     def print_visor(self, msg):
@@ -187,7 +187,7 @@ class TkGUI(tk.Tk):
             self.visor.delete('1.0', '2.0')
             self.NUMBER = int(self.display.get())
             if self.CONTA1 != '':
-                self.print_visor("Cartao 2 lido")
+                self.print_visor("Cartao 2 lido, clique no botao confirm")
                 self.CONTA2 = self.read_card()
                 self.print_visor(self.CONTA2)
             else:
