@@ -153,26 +153,20 @@ class TkGUI(tk.Tk):
             data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': self.NUMBER}
             r = requests.post(url=API_ENDPOINT, data=data)
             if r.status_code == 201:
-                self.visor.delete('1.0', '2.0')
-                self.visor.insert('1.0', 'Transferencia efetuada!')
-                self.clear_all()
                 self.CONTA1 = ''
                 self.CONTA2 = ''
                 self.NUMBER = 0
+                self.print_visor("Transferencia efetuada!")
             else:
-                self.visor.delete('1.0', '2.0')
-                self.visor.insert('1.0', 'Nao foi possivel transferir')
-                self.clear_all()
                 self.CONTA1 = ''
                 self.CONTA2 = ''
                 self.NUMBER = 0
+                self.print_visor("Nao foi possivel transferir")
         else:
-            self.visor.delete('1.0', '2.0')
-            self.visor.insert('1.0', 'Nao foi possivel transferir')
-            self.clear_all()
             self.CONTA1 = ''
             self.CONTA2 = ''
             self.NUMBER = 0
+            self.print_visor("Nao foi possivel transferir")
 
 
     def print_visor(self, msg):
