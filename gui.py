@@ -154,7 +154,6 @@ class TkGUI(tk.Tk):
 					id2, text = reader.read()
 					self.visor.insert('1.0', 'Passa um cartao diferente ')
 					self.visor.insert('1.0', id2)
-					self.visor.delete('1.0', '2.0')
 
 			finally:
 				GPIO.cleanup()
@@ -169,9 +168,11 @@ class TkGUI(tk.Tk):
 			if r.status_code == 201:
 				self.visor.delete('1.0', '2.0')
 				self.visor.insert('1.0', 'Transferencia efetuada!')
+				self.clear_all()
 			else:
 				self.visor.delete('1.0', '2.0')
 				self.visor.insert('1.0', 'Nao foi possivel transferir')
+				self.clear_all()
 		else:
 			self.visor.delete('1.0', '2.0')
 			self.visor.insert('1.0', 'Insira o valor')
