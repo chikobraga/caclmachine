@@ -114,7 +114,7 @@ class TkGUI(tk.Tk):
             self, text="*", command=lambda: self.get_operation("Hipoteca"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
         multiply.grid(row=5, column=3)
         divide = tk.Button(
-            self, text="Confirm", command=lambda:  self.confirm("confirm"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
+            self, text="Confirm", command=lambda:  self.confirm(), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
         divide.grid(row=6, column=3)
 
         # adding new operations
@@ -155,10 +155,14 @@ class TkGUI(tk.Tk):
                 self.visor.delete('1.0', '2.0')
                 self.visor.insert('1.0', 'Transferencia efetuada!')
                 self.clear_all()
+                self.CONTA1 = ''
+                self.CONTA2 = ''
             else:
                 self.visor.delete('1.0', '2.0')
                 self.visor.insert('1.0', 'Nao foi possivel transferir')
                 self.clear_all()
+                self.CONTA1 = ''
+                self.CONTA2 = ''
         else:
             self.visor.delete('1.0', '2.0')
             self.visor.insert('1.0', 'Nao foi possivel transferir')
