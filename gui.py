@@ -156,7 +156,7 @@ class TkGUI(tk.Tk):
             data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': self.NUMBER}
             r = requests.post(url=API_ENDPOINT, data=data)
             if r.status_code == 201:
-                texto = self.NUMBER
+                texto = str(self.NUMBER)
                 texto = "Transferencia de "+texto+" efetuada!"
                 self.print_visor(texto)
                 self.CONTA1 = ''
