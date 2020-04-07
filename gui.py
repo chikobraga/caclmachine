@@ -31,8 +31,6 @@ class TkGUI(tk.Tk):
     i = 0
     NEW_OPERATION = False
     VISOR_DISPLAY = False
-    CONTA1
-    CONTA2
 
     def __init__(self):
         try:
