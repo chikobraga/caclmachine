@@ -152,7 +152,7 @@ class TkGUI(tk.Tk):
 				id2 = id
 				while id2 == id:
 					numlines = self.visor.index('end - 1 line').split('.')[0]
-					if numlines==12:
+					if numlines==5:
 						self.visor.delete(1.0,2.0)
 					if self.visor.index('end','\n')
 					id2, text = reader.read()
