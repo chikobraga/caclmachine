@@ -156,8 +156,8 @@ class TkGUI(tk.Tk):
 						self.visor.delete(1.0,2.0)
 					if index('end-1c')!='1.0':
 						id2, text = reader.read()
-						self.visor.insert('end', id2.'\n')
-						self.visor.insert('end', 'Passa um cartao diferente \n')
+						self.visor.insert('end', id2)
+						self.visor.insert('end', '\nPassa um cartao diferente \n')
 			finally:
 				GPIO.cleanup()
 
