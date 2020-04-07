@@ -140,23 +140,20 @@ class TkGUI(tk.Tk):
 	def credit(self, value):
 		if self.display.get():
 			API_ENDPOINT = "http://34.95.207.226/api/transaction/"
-
-			value = self.display.get():
+			value = self.display.get()
 			self.visor.delete('1.0', '2.0')
 			number = int(self.display.get())
 			self.visor.insert('1.0', 'Passe o cartao onde sera debitado\n')
 			reader = SimpleMFRC522()
 			try:
+				self.visor.insert('1.0', 'Passe o cartao onde sera debitado\n')
 				id, text = reader.read()
 				update_account = id
-
-			finally:
-				GPIO.cleanup()
-
-			self.visor.insert('1.0', 'Passe o cartao onde sera creditado\n')
-			try:
+				self.visor.insert('1.0', 'Passe o cartao onde sera creditado\n')
 				id2, text = reader.read()
-				dest_account = id2
+				while id2 != id:
+					self.visor.inser('1.0','Passa um cartao diferente'
+					id2, text = reader.read()
 
 			finally:
 				GPIO.cleanup()
