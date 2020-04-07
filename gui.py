@@ -33,6 +33,7 @@ class TkGUI(tk.Tk):
     VISOR_DISPLAY = False
     CONTA1 = ''
     CONTA2 = ''
+    NUMBER = 0
 
     def __init__(self):
         try:
@@ -149,7 +150,7 @@ class TkGUI(tk.Tk):
         dest_account=self.CONTA2
         API_ENDPOINT = "http://34.95.207.226/api/transaction/"
         if dest_account != update_account:
-            data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': number}
+            data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': self.NUMBER}
             r = requests.post(url=API_ENDPOINT, data=data)
             if r.status_code == 201:
                 self.visor.delete('1.0', '2.0')
@@ -157,16 +158,21 @@ class TkGUI(tk.Tk):
                 self.clear_all()
                 self.CONTA1 = ''
                 self.CONTA2 = ''
+                self.NUMBER = 0
             else:
                 self.visor.delete('1.0', '2.0')
                 self.visor.insert('1.0', 'Nao foi possivel transferir')
                 self.clear_all()
                 self.CONTA1 = ''
                 self.CONTA2 = ''
+                self.NUMBER = 0
         else:
             self.visor.delete('1.0', '2.0')
             self.visor.insert('1.0', 'Nao foi possivel transferir')
             self.clear_all()
+            self.CONTA1 = ''
+            self.CONTA2 = ''
+            self.NUMBER = 0
 
 
     def print_visor(self, msg):
@@ -180,15 +186,15 @@ class TkGUI(tk.Tk):
     def credit(self, value):
         if self.display.get():
             self.visor.delete('1.0', '2.0')
-            number = int(self.display.get())
+            self.NUMBER = int(self.display.get())
             if self.CONTA1 != '':
-                self.print_visor("Cartao 2 lido\n")
+                self.print_visor("Cartao 2 lido")
                 self.CONTA2 = self.read_card()
                 self.print_visor(self.CONTA2)
             else:
                 self.print_visor("Cartao 1 lido, passe o segundo")
                 self.CONTA1 = self.read_card()
-                self.print_visor(self.CONTA2)
+                self.print_visor(self.CONTA1)
         else:
             self.visor.delete('1.0', '2.0')
             self.visor.insert('1.0', 'Insira o valor')
