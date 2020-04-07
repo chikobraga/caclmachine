@@ -165,6 +165,7 @@ class TkGUI(tk.Tk):
 			if dest_account != update_account:
 				data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': number}
 				r = requests.post(url=API_ENDPOINT, data=data)
+				print(r.status_code)
 			if r.status_code == '201':
 				self.visor.delete('1.0', '2.0')
 				self.visor.insert('1.0', 'Transferencia efetuada!')
