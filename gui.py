@@ -152,7 +152,6 @@ class TkGUI(tk.Tk):
 				id2, text = reader.read()
 				while id2 != id:
 					self.visor.delete('1.0', '2.0')
-					self.visor.inser('1.0','Passa um cartao diferente')
 					id2, text = reader.read()
 					self.visor.inser('1.0', 'Passa um cartao diferente %s' % id2)
 
@@ -160,6 +159,8 @@ class TkGUI(tk.Tk):
 				GPIO.cleanup()
 
 			dest_account = id2
+			print(dest_account)
+			print(update_account)
 			if dest_account != '' and update_account != '':
 				data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': number}
 				r = requests.post(url=API_ENDPOINT, data=data)
