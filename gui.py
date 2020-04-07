@@ -31,6 +31,8 @@ class TkGUI(tk.Tk):
     i = 0
     NEW_OPERATION = False
     VISOR_DISPLAY = False
+    CONTA1 = ''
+    CONTA2 = ''
 
     def __init__(self):
         try:
@@ -112,7 +114,7 @@ class TkGUI(tk.Tk):
             self, text="*", command=lambda: self.get_operation("Hipoteca"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
         multiply.grid(row=5, column=3)
         divide = tk.Button(
-            self, text="Confirm", command=lambda:  self.get_operation("confirm"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
+            self, text="Confirm", command=lambda:  self.confirm("confirm"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
         divide.grid(row=6, column=3)
 
         # adding new operations
@@ -142,6 +144,27 @@ class TkGUI(tk.Tk):
         id, text = reader.read()
         return id
 
+    def confirm(self):
+        update_account=self.CONTA1
+        dest_account=self.CONTA2
+        API_ENDPOINT = "http://34.95.207.226/api/transaction/"
+        if dest_account != update_account:
+            data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': number}
+            r = requests.post(url=API_ENDPOINT, data=data)
+            if r.status_code == 201:
+                self.visor.delete('1.0', '2.0')
+                self.visor.insert('1.0', 'Transferencia efetuada!')
+                self.clear_all()
+            else:
+                self.visor.delete('1.0', '2.0')
+                self.visor.insert('1.0', 'Nao foi possivel transferir')
+                self.clear_all()
+        else:
+            self.visor.delete('1.0', '2.0')
+            self.visor.insert('1.0', 'Nao foi possivel transferir')
+            self.clear_all()
+
+
     def print_visor(self, msg):
         numlines = self.visor.index('end - 1 line').split('.')[0]
         if numlines == 5:
@@ -152,36 +175,14 @@ class TkGUI(tk.Tk):
 
     def credit(self, value):
         if self.display.get():
-            API_ENDPOINT = "http://34.95.207.226/api/transaction/"
             self.visor.delete('1.0', '2.0')
             number = int(self.display.get())
-            self.print_visor("Passe o cartao")
-            update_account = self.read_card()
-            id2 = update_account
-            while id2 == update_account:
-                numlines = self.visor.index('end - 1 line').split('.')[0]
-                if numlines==6:
-                    self.visor.delete(1.0,2.0)
-                if self.visor.index('end-1c')!='1.0':
-                    self.visor.insert('end', '\n')
-                id2 = self.read_card()
-                self.visor.insert('end', id2)
-                self.visor.insert('end', '\nPassa um cartao diferente \n')
-
-            dest_account = id2
-            print(dest_account)
-            print(update_account)
-            if dest_account != update_account:
-                data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': number}
-                r = requests.post(url=API_ENDPOINT, data=data)
-            if r.status_code == 201:
-                self.visor.delete('1.0', '2.0')
-                self.visor.insert('1.0', 'Transferencia efetuada!')
-                self.clear_all()
+            if self.CONTA1 != '':
+                self.print_visor("Passe o cartao 2")
+                self.CONTA2 = self.read_card()
             else:
-                self.visor.delete('1.0', '2.0')
-                self.visor.insert('1.0', 'Nao foi possivel transferir')
-                self.clear_all()
+                self.print_visor("Passe o cartao 1")
+                self.CONTA1 = self.read_card()
         else:
             self.visor.delete('1.0', '2.0')
             self.visor.insert('1.0', 'Insira o valor')
