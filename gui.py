@@ -150,15 +150,15 @@ class TkGUI(tk.Tk):
 				update_account = id
 				self.visor.insert('end', 'Passe o cartao onde sera creditado\n')
 				id2 = id
-					while id2 == id:
-						numlines = self.visor.index('end - 1 line').split('.')[0]
-						if numlines==6:
-							self.visor.delete(1.0,2.0)
-						if self.visor.index('end-1c')!='1.0':
-							self.visor.insert('end', '\n')
-						id2, text = reader.read()
-						self.visor.insert('end', id2)
-						self.visor.insert('end', '\nPassa um cartao diferente \n')
+				while id2 == id:
+					numlines = self.visor.index('end - 1 line').split('.')[0]
+					if numlines==6:
+						self.visor.delete(1.0,2.0)
+					if self.visor.index('end-1c')!='1.0':
+						self.visor.insert('end', '\n')
+					id2, text = reader.read()
+					self.visor.insert('end', id2)
+					self.visor.insert('end', '\nPassa um cartao diferente \n')
 
 				dest_account = id2
 				print(dest_account)
