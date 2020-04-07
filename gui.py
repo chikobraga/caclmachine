@@ -182,11 +182,13 @@ class TkGUI(tk.Tk):
             self.visor.delete('1.0', '2.0')
             number = int(self.display.get())
             if self.CONTA1 != '':
-                self.print_visor("Passe o cartao 2")
+                self.print_visor("Cartao 2 lido\n")
                 self.CONTA2 = self.read_card()
+                self.print_visor(self.CONTA2)
             else:
-                self.print_visor("Passe o cartao 1")
+                self.print_visor("Cartao 1 lido, passe o segundo")
                 self.CONTA1 = self.read_card()
+                self.print_visor(self.CONTA2)
         else:
             self.visor.delete('1.0', '2.0')
             self.visor.insert('1.0', 'Insira o valor')
