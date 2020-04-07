@@ -149,6 +149,7 @@ class TkGUI(tk.Tk):
 				id, text = reader.read()
 				update_account = id
 				self.visor.insert('1.0', 'Passe o cartao onde sera creditado\n')
+				id2 = id
 				while id2 == id:
 					self.visor.delete('1.0', '2.0')
 					id2, text = reader.read()
