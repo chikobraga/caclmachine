@@ -176,11 +176,13 @@ class TkGUI(tk.Tk):
 
     def print_visor(self, msg):
         numlines = self.visor.index('end - 1 line').split('.')[0]
+        self.visor['normal']
         if numlines == 5:
             self.visor.delete(1.0, 2.0)
         if self.visor.index('end-1c') != '1.0':
             self.visor.insert('end', '\n')
         self.visor.insert('end', msg)
+        self.visor['disabled']
 
     def credit(self, value):
         if self.display.get():
