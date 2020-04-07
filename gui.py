@@ -138,47 +138,47 @@ class TkGUI(tk.Tk):
 
 
 	def credit(self, value):
-		if self.display.get():
-			API_ENDPOINT = "http://34.95.207.226/api/transaction/"
-			self.visor.delete('1.0', '2.0')
-			number = int(self.display.get())
-			self.visor.insert('end', 'Passe o cartao onde sera debitado\n')
-			reader = SimpleMFRC522()
-			try:
+		try:
+			if self.display.get():
+				API_ENDPOINT = "http://34.95.207.226/api/transaction/"
+				self.visor.delete('1.0', '2.0')
+				number = int(self.display.get())
+				self.visor.insert('end', 'Passe o cartao onde sera debitado\n')
+				reader = SimpleMFRC522()
 				self.visor.insert('end', 'Passe o cartao onde sera debitado\n')
 				id, text = reader.read()
 				update_account = id
 				self.visor.insert('end', 'Passe o cartao onde sera creditado\n')
 				id2 = id
-				while id2 == id:
-					numlines = self.visor.index('end - 1 line').split('.')[0]
-					if numlines==6:
-						self.visor.delete(1.0,2.0)
-					if self.visor.index('end-1c')!='1.0':
+					while id2 == id:
+						numlines = self.visor.index('end - 1 line').split('.')[0]
+						if numlines==6:
+							self.visor.delete(1.0,2.0)
+						if self.visor.index('end-1c')!='1.0':
+							self.visor.insert('end', '\n')
 						id2, text = reader.read()
 						self.visor.insert('end', id2)
 						self.visor.insert('end', '\nPassa um cartao diferente \n')
-			finally:
-				GPIO.cleanup()
 
-			dest_account = id2
-			print(dest_account)
-			print(update_account)
-			if dest_account != update_account:
-				data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': number}
-				r = requests.post(url=API_ENDPOINT, data=data)
-				print(r.status_code)
-			if r.status_code == 201:
-				self.visor.delete('1.0', '2.0')
-				self.visor.insert('1.0', 'Transferencia efetuada!')
-				self.clear_all()
+				dest_account = id2
+				print(dest_account)
+				print(update_account)
+				if dest_account != update_account:
+					data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': number}
+					r = requests.post(url=API_ENDPOINT, data=data)
+				if r.status_code == 201:
+					self.visor.delete('1.0', '2.0')
+					self.visor.insert('1.0', 'Transferencia efetuada!')
+					self.clear_all()
+				else:
+					self.visor.delete('1.0', '2.0')
+					self.visor.insert('1.0', 'Nao foi possivel transferir')
+					self.clear_all()
 			else:
 				self.visor.delete('1.0', '2.0')
-				self.visor.insert('1.0', 'Nao foi possivel transferir')
-				self.clear_all()
-		else:
-			self.visor.delete('1.0', '2.0')
-			self.visor.insert('1.0', 'Insira o valor')
+				self.visor.insert('1.0', 'Insira o valor')
+		finally:
+			GPIO.cleanup()
 
 
 	def factorial(self, operator):
