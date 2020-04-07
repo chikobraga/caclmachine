@@ -140,7 +140,6 @@ class TkGUI(tk.Tk):
 	def credit(self, value):
 		if self.display.get():
 			API_ENDPOINT = "http://34.95.207.226/api/transaction/"
-			value = self.display.get()
 			self.visor.delete('1.0', '2.0')
 			number = int(self.display.get())
 			self.visor.insert('1.0', 'Passe o cartao onde sera debitado\n')
@@ -154,11 +153,12 @@ class TkGUI(tk.Tk):
 				while id2 != id:
 					self.visor.inser('1.0','Passa um cartao diferente'
 					id2, text = reader.read()
+					dest_account = id2
 
 			finally:
 				GPIO.cleanup()
 
-			data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': value}
+			data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': number}
 			r = requests.post(url=API_ENDPOINT, data=data)
 			if r.status_code == '201':
 				self.visor.delete('1.0', '2.0')
