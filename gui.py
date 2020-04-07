@@ -153,7 +153,8 @@ class TkGUI(tk.Tk):
 				while id2 == id:
 					self.visor.delete('1.0', '2.0')
 					id2, text = reader.read()
-					self.visor.inser('1.0', 'Passa um cartao diferente %s' % id2)
+					self.visor.insert('1.0', 'Passa um cartao diferente ')
+					self.visor.insert('1.0', id2)
 
 			finally:
 				GPIO.cleanup()
