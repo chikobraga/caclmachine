@@ -145,17 +145,24 @@ class TkGUI(tk.Tk):
 			GPIO.cleanup()
 		return id
 
+	def print_visor(self, msg):
+		numlines = self.visor.index('end - 1 line').split('.')[0]
+		if numlines == 5:
+			self.visor.delete(1.0, 2.0)
+		if self.visor.index('end-1c') != '1.0':
+			self.visor.insert('end', '\n')
+		self.visor.insert('end', msg)
 
 	def credit(self, value):
 		if self.display.get():
 			API_ENDPOINT = "http://34.95.207.226/api/transaction/"
 			self.visor.delete('1.0', '2.0')
 			number = int(self.display.get())
-			self.visor.insert('end', 'Passe o cartao onde sera debitado\n')
-			id = self.read_card()
+			self.print_visor("Passe o cartao")
+			update_account = self.read_card()
 			self.visor.insert('end', 'Passe o cartao onde sera creditado\n')
-			id2 = id
-			while id2 == id:
+			id2 = update_account
+			while id2 == update_account:
 				numlines = self.visor.index('end - 1 line').split('.')[0]
 				if numlines==6:
 					self.visor.delete(1.0,2.0)
