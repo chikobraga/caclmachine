@@ -149,7 +149,7 @@ class TkGUI(tk.Tk):
 				id, text = reader.read()
 				update_account = id
 				self.visor.insert('1.0', 'Passe o cartao onde sera creditado\n')
-				id2, text = reader.read()
+				id2 =
 				while id2 != id:
 					self.visor.delete('1.0', '2.0')
 					id2, text = reader.read()
@@ -161,13 +161,14 @@ class TkGUI(tk.Tk):
 			dest_account = id2
 			print(dest_account)
 			print(update_account)
-			if dest_account != '' and update_account != '':
+			if dest_account != update_account:
 				data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': number}
 				r = requests.post(url=API_ENDPOINT, data=data)
 			if r.status_code == '201':
 				self.visor.delete('1.0', '2.0')
 				self.visor.insert('1.0', 'Transferencia efetuada!')
 			else:
+				self.visor.delete('1.0', '2.0')
 				self.visor.insert('1.0', 'Nao foi possivel transferir')
 		else:
 			self.visor.delete('1.0', '2.0')
