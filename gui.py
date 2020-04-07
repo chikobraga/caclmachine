@@ -151,7 +151,7 @@ class TkGUI(tk.Tk):
 				self.visor.insert('1.0', 'Passe o cartao onde sera creditado\n')
 				id2, text = reader.read()
 				while id2 != id:
-					self.visor.inser('1.0','Passa um cartao diferente'
+					self.visor.inser('1.0','Passa um cartao diferente')
 					id2, text = reader.read()
 					dest_account = id2
 
