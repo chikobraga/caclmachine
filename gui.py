@@ -31,6 +31,8 @@ class TkGUI(tk.Tk):
 	i = 0
 	NEW_OPERATION = False
 	VISOR_DISPLAY = False
+	CONTA1
+	CONTA2
 
 	def __init__(self):
 		try:
@@ -112,7 +114,7 @@ class TkGUI(tk.Tk):
 			self, text="*", command=lambda: self.get_operation("Hipoteca"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
 		multiply.grid(row=5, column=3)
 		divide = tk.Button(
-			self, text="/", command=lambda:  self.get_operation("/"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
+			self, text="Confirm", command=lambda:  self.get_operation("confirm"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
 		divide.grid(row=6, column=3)
 
 		# adding new operations
@@ -139,10 +141,7 @@ class TkGUI(tk.Tk):
 
 	def read_card(self):
 		reader = SimpleMFRC522()
-		try:
-			id, text = reader.read()
-		finally:
-			GPIO.cleanup()
+		id, text = reader.read()
 		return id
 
 	def print_visor(self, msg):
@@ -160,7 +159,6 @@ class TkGUI(tk.Tk):
 			number = int(self.display.get())
 			self.print_visor("Passe o cartao")
 			update_account = self.read_card()
-			self.visor.insert('end', 'Passe o cartao onde sera creditado\n')
 			id2 = update_account
 			while id2 == update_account:
 				numlines = self.visor.index('end - 1 line').split('.')[0]
@@ -254,6 +252,7 @@ class TkGUI(tk.Tk):
 	    except Exception:
 	        self.clear_all()
 	        self.display.insert(0, "Error!")
+			GPIO.cleanup()
 
 	def run(self):
 		"""Initiate event loop."""
