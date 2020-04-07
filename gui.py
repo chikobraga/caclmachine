@@ -141,8 +141,11 @@ class TkGUI(tk.Tk):
 
 
     def read_card(self):
-        reader = SimpleMFRC522()
-        id, text = reader.read()
+        try:
+            reader = SimpleMFRC522()
+            id, text = reader.read()
+        except:
+            GPIO.cleanup()
         return id
 
     def confirm(self):
@@ -257,7 +260,7 @@ class TkGUI(tk.Tk):
         except Exception:
             self.clear_all()
             self.display.insert(0, "Error!")
-            GPIO.cleanup()
+
 
     def run(self):
         """Initiate event loop."""
