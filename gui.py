@@ -137,49 +137,51 @@ class TkGUI(tk.Tk):
 		square.grid(row=6, column=5)
 
 
-	def credit(self, value):
+	def read_card(self):
+		reader = SimpleMFRC522()
 		try:
-			if self.display.get():
-				API_ENDPOINT = "http://34.95.207.226/api/transaction/"
-				self.visor.delete('1.0', '2.0')
-				number = int(self.display.get())
-				self.visor.insert('end', 'Passe o cartao onde sera debitado\n')
-				reader = SimpleMFRC522()
-				self.visor.insert('end', 'Passe o cartao onde sera debitado\n')
-				id, text = reader.read()
-				update_account = id
-				self.visor.insert('end', 'Passe o cartao onde sera creditado\n')
-				id2 = id
-				while id2 == id:
-					numlines = self.visor.index('end - 1 line').split('.')[0]
-					if numlines==6:
-						self.visor.delete(1.0,2.0)
-					if self.visor.index('end-1c')!='1.0':
-						self.visor.insert('end', '\n')
-					id2, text = reader.read()
-					self.visor.insert('end', id2)
-					self.visor.insert('end', '\nPassa um cartao diferente \n')
-
-				dest_account = id2
-				print(dest_account)
-				print(update_account)
-				if dest_account != update_account:
-					data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': number}
-					r = requests.post(url=API_ENDPOINT, data=data)
-				if r.status_code == 201:
-					self.visor.delete('1.0', '2.0')
-					self.visor.insert('1.0', 'Transferencia efetuada!')
-					self.clear_all()
-				else:
-					self.visor.delete('1.0', '2.0')
-					self.visor.insert('1.0', 'Nao foi possivel transferir')
-					self.clear_all()
-			else:
-				self.visor.delete('1.0', '2.0')
-				self.visor.insert('1.0', 'Insira o valor')
+			id, text = reader.read()
 		finally:
 			GPIO.cleanup()
+		return id
 
+
+	def credit(self, value):
+		if self.display.get():
+			API_ENDPOINT = "http://34.95.207.226/api/transaction/"
+			self.visor.delete('1.0', '2.0')
+			number = int(self.display.get())
+			self.visor.insert('end', 'Passe o cartao onde sera debitado\n')
+			id = self.read_card()
+			self.visor.insert('end', 'Passe o cartao onde sera creditado\n')
+			id2 = id
+			while id2 == id:
+				numlines = self.visor.index('end - 1 line').split('.')[0]
+				if numlines==6:
+					self.visor.delete(1.0,2.0)
+				if self.visor.index('end-1c')!='1.0':
+					self.visor.insert('end', '\n')
+				id2 = self.read_card()
+				self.visor.insert('end', id2)
+				self.visor.insert('end', '\nPassa um cartao diferente \n')
+
+			dest_account = id2
+			print(dest_account)
+			print(update_account)
+			if dest_account != update_account:
+				data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': number}
+				r = requests.post(url=API_ENDPOINT, data=data)
+			if r.status_code == 201:
+				self.visor.delete('1.0', '2.0')
+				self.visor.insert('1.0', 'Transferencia efetuada!')
+				self.clear_all()
+			else:
+				self.visor.delete('1.0', '2.0')
+				self.visor.insert('1.0', 'Nao foi possivel transferir')
+				self.clear_all()
+		else:
+			self.visor.delete('1.0', '2.0')
+			self.visor.insert('1.0', 'Insira o valor')
 
 	def factorial(self, operator):
 		"""Calculates the factorial of the number entered."""
