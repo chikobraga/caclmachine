@@ -142,18 +142,19 @@ class TkGUI(tk.Tk):
 			API_ENDPOINT = "http://34.95.207.226/api/transaction/"
 			self.visor.delete('1.0', '2.0')
 			number = int(self.display.get())
-			self.visor.insert('1.0', 'Passe o cartao onde sera debitado\n')
+			self.visor.insert('end', 'Passe o cartao onde sera debitado\n')
 			reader = SimpleMFRC522()
 			try:
-				self.visor.insert('1.0', 'Passe o cartao onde sera debitado\n')
+				self.visor.insert('end', 'Passe o cartao onde sera debitado\n')
 				id, text = reader.read()
 				update_account = id
-				self.visor.insert('1.0', 'Passe o cartao onde sera creditado\n')
+				self.visor.insert('end', 'Passe o cartao onde sera creditado\n')
 				id2 = id
 				while id2 == id:
 					id2, text = reader.read()
-					self.visor.insert('1.0', 'Passa um cartao diferente ')
-					self.visor.insert('1.0', id2)
+					self.visor.insert('end', id2)
+					self.visor.insert('end', 'Passa um cartao diferente ')
+
 
 			finally:
 				GPIO.cleanup()
