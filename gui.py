@@ -153,7 +153,7 @@ class TkGUI(tk.Tk):
 				while id2 == id:
 					id2, text = reader.read()
 					self.visor.insert('end', id2)
-					self.visor.insert('end', 'Passa um cartao diferente ')
+					self.visor.insert('end', 'Passa um cartao diferente \n')
 
 
 			finally:
