@@ -112,7 +112,7 @@ class TkGUI(tk.Tk):
         minus = tk.Button(self, text="Titulos", command=lambda: self.get_operation("-"), font=self.FONT_MED, width='6', height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
         minus.grid(row=4, column=3)
         multiply = tk.Button(
-            self, text="*", command=lambda: self.get_operation("Hipoteca"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
+            self, text="Saque", command=lambda: self.get_operation("Hipoteca"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
         multiply.grid(row=5, column=3)
         divide = tk.Button(
             self, text="Confirm", command=lambda:  self.confirm(), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
@@ -121,7 +121,7 @@ class TkGUI(tk.Tk):
         # adding new operations
         pi = tk.Button(self, text="pi", command=lambda: self.get_operation("*3.14"), font=self.FONT_LARGE)
         pi.grid(row=3, column=4)
-        modulo = tk.Button(self, text="%", command=lambda:  self.get_operation("*"), font=self.FONT_LARGE)
+        modulo = tk.Button(self, text="Deposito", command=lambda:  self.get_operation("*"), font=self.FONT_LARGE)
         modulo.grid(row=4, column=4)
         left_bracket = tk.Button(self, text="(", command=lambda: self.get_operation("("), font=self.FONT_LARGE)
         left_bracket.grid(row=5, column=4)
@@ -197,6 +197,22 @@ class TkGUI(tk.Tk):
         else:
             self.visor.delete('1.0', '2.0')
             self.visor.insert('1.0', 'Insira o valor')
+
+    def saque(self, value):
+        if self.display.get():
+            self.visor.delete('1.0', '2.0')
+            self.NUMBER = self.display.get()
+            self.print_visor("Cartao 1 lido")
+            self.CONTA1 = self.read_card()
+            API_ENDPOINT = "http://34.95.207.226/api/infop/"+self.NUMBER+"/"
+            data = {'owner_title': self.CONTA1}
+            r = requests.post(url=API_ENDPOINT, data=data)
+            if r.status_code == 201:
+                self.print_visor("Saque efetuado")
+        else:
+            self.print_visor("Insira um valor antes de clicar em saque")
+
+
 
     def factorial(self, operator):
         """Calculates the factorial of the number entered."""
