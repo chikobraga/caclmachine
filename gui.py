@@ -151,21 +151,22 @@ class TkGUI(tk.Tk):
         update_account=self.CONTA1
         dest_account=self.CONTA2
         API_ENDPOINT = "http://34.95.207.226/api/transaction/"
-        if dest_account != update_account:
-            data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': self.NUMBER}
-            r = requests.post(url=API_ENDPOINT, data=data)
-            if r.status_code == 201:
-                texto = str(self.NUMBER)
-                texto = "Transferencia de $"+texto+" efetuada!"
-                self.print_visor(texto)
-                self.CONTA1 = ''
-                self.CONTA2 = ''
-                self.NUMBER = 0
-            else:
-                self.CONTA1 = ''
-                self.CONTA2 = ''
-                self.NUMBER = 0
-                self.print_visor("Nao foi possivel transferir")
+        if self.TIPO == 'TRANSFER'
+            if dest_account != update_account:
+                data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': self.NUMBER}
+                r = requests.post(url=API_ENDPOINT, data=data)
+                if r.status_code == 201:
+                    texto = str(self.NUMBER)
+                    texto = "Transferencia de $"+texto+" efetuada!"
+                    self.print_visor(texto)
+                    self.CONTA1 = ''
+                    self.CONTA2 = ''
+                    self.NUMBER = 0
+                else:
+                    self.CONTA1 = ''
+                    self.CONTA2 = ''
+                    self.NUMBER = 0
+                    self.print_visor("Nao foi possivel transferir")
         elif self.TIPO == 'SAQUE':
             data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account,
                     'value': self.NUMBER}
@@ -207,6 +208,7 @@ class TkGUI(tk.Tk):
         if self.display.get():
             self.visor.delete('1.0', '2.0')
             self.NUMBER = int(self.display.get())
+            self.TIPO = 'TRANSFER'
             if self.CONTA1 != '':
                 self.print_visor("Cartao 2 lido, clique no botao confirm")
                 self.CONTA2 = self.read_card()
