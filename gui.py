@@ -226,6 +226,7 @@ class TkGUI(tk.Tk):
             self.print_visor("Cartao 1 lido")
             self.CONTA1 = self.read_card()
             self.TIPO = 'SAQUE'
+            self.CONTA2 = '412754553028'
         else:
             self.print_visor("Insira um valor antes de clicar em saque")
 
@@ -234,8 +235,9 @@ class TkGUI(tk.Tk):
             self.visor.delete('1.0', '2.0')
             self.NUMBER = self.display.get()
             self.print_visor("Cartao 1 lido")
-            self.CONTA1 = self.read_card()
+            self.CONTA2 = self.read_card()
             self.TIPO = 'DEPOSITO'
+            self.CONTA1 = '412754553028'
         else:
             self.print_visor("Insira um valor antes de clicar em deposito")
 
