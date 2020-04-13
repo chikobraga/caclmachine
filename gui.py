@@ -34,6 +34,7 @@ class TkGUI(tk.Tk):
     CONTA1 = ''
     CONTA2 = ''
     NUMBER = 0
+    TIPO = ''
 
     def __init__(self):
         try:
@@ -111,17 +112,15 @@ class TkGUI(tk.Tk):
         plus.grid(row=3, column=3)
         minus = tk.Button(self, text="Titulos", command=lambda: self.get_operation("-"), font=self.FONT_MED, width='6', height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
         minus.grid(row=4, column=3)
-        multiply = tk.Button(
-            self, text="Saque", command=lambda: self.get_operation("Hipoteca"), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
+        multiply = tk.Button(self, text="Retirada", command=lambda: self.saque(self.display.get()), font=self.FONT_MED, width='6', height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
         multiply.grid(row=5, column=3)
-        divide = tk.Button(
-            self, text="Confirm", command=lambda:  self.confirm(), font=self.FONT_LARGE, width=self.WIDTH, height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
+        divide = tk.Button(self, text="Confirm", command=lambda:  self.confirm(), font=self.FONT_MED, width='6', height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
         divide.grid(row=6, column=3)
 
         # adding new operations
         pi = tk.Button(self, text="pi", command=lambda: self.get_operation("*3.14"), font=self.FONT_LARGE)
         pi.grid(row=3, column=4)
-        modulo = tk.Button(self, text="Deposito", command=lambda:  self.get_operation("*"), font=self.FONT_LARGE)
+        modulo = tk.Button(self, text="Deposito", command=lambda:  self.deposito(self.display.get()), font=self.FONT_MED, width='6', height=self.HEIGHT, bd=self.BD, fg='#000000', bg='#FFFFFF', activebackground='#e6f3ff')
         modulo.grid(row=4, column=4)
         left_bracket = tk.Button(self, text="(", command=lambda: self.get_operation("("), font=self.FONT_LARGE)
         left_bracket.grid(row=5, column=4)
@@ -167,6 +166,28 @@ class TkGUI(tk.Tk):
                 self.CONTA2 = ''
                 self.NUMBER = 0
                 self.print_visor("Nao foi possivel transferir")
+        elif self.TIPO == 'SAQUE'
+            data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account,
+                    'value': self.NUMBER}
+            r = requests.post(url=API_ENDPOINT, data=data)
+            if r.status_code == 201:
+                texto = str(self.NUMBER)
+                texto = "Retirada de $" + texto + " efetuada!"
+                self.print_visor(texto)
+                self.CONTA1 = ''
+                self.CONTA2 = ''
+                self.NUMBER = 0
+        elif self.TIPO == 'DEPOSITO'
+            data = {'transaction': 'D', 'update_account': update_account, 'dest_account': dest_account,
+                    'value': self.NUMBER}
+            r = requests.post(url=API_ENDPOINT, data=data)
+            if r.status_code == 201:
+                texto = str(self.NUMBER)
+                texto = "Deposito de $" + texto + " efetuada!"
+                self.print_visor(texto)
+                self.CONTA1 = ''
+                self.CONTA2 = ''
+                self.NUMBER = 0
         else:
             self.CONTA1 = ''
             self.CONTA2 = ''
@@ -199,6 +220,15 @@ class TkGUI(tk.Tk):
             self.visor.insert('1.0', 'Insira o valor')
 
     def saque(self, value):
+        if self.display.get():
+            self.visor.delete('1.0', '2.0')
+            self.NUMBER = self.display.get()
+            self.print_visor("Cartao 1 lido")
+            self.CONTA1 = self.read_card()
+        else:
+            self.print_visor("Insira um valor antes de clicar em saque")
+
+    def deposito(self, value):
         if self.display.get():
             self.visor.delete('1.0', '2.0')
             self.NUMBER = self.display.get()
