@@ -166,7 +166,7 @@ class TkGUI(tk.Tk):
                 self.CONTA2 = ''
                 self.NUMBER = 0
                 self.print_visor("Nao foi possivel transferir")
-        elif self.TIPO == 'SAQUE'
+        elif self.TIPO == 'SAQUE':
             data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account,
                     'value': self.NUMBER}
             r = requests.post(url=API_ENDPOINT, data=data)
@@ -177,7 +177,7 @@ class TkGUI(tk.Tk):
                 self.CONTA1 = ''
                 self.CONTA2 = ''
                 self.NUMBER = 0
-        elif self.TIPO == 'DEPOSITO'
+        elif self.TIPO == 'DEPOSITO':
             data = {'transaction': 'D', 'update_account': update_account, 'dest_account': dest_account,
                     'value': self.NUMBER}
             r = requests.post(url=API_ENDPOINT, data=data)
@@ -225,6 +225,7 @@ class TkGUI(tk.Tk):
             self.NUMBER = self.display.get()
             self.print_visor("Cartao 1 lido")
             self.CONTA1 = self.read_card()
+            self.TIPO = 'SAQUE'
         else:
             self.print_visor("Insira um valor antes de clicar em saque")
 
@@ -234,13 +235,9 @@ class TkGUI(tk.Tk):
             self.NUMBER = self.display.get()
             self.print_visor("Cartao 1 lido")
             self.CONTA1 = self.read_card()
-            API_ENDPOINT = "http://34.95.207.226/api/infop/"+self.NUMBER+"/"
-            data = {'owner_title': self.CONTA1}
-            r = requests.post(url=API_ENDPOINT, data=data)
-            if r.status_code == 201:
-                self.print_visor("Saque efetuado")
+            self.TIPO = 'DEPOSITO'
         else:
-            self.print_visor("Insira um valor antes de clicar em saque")
+            self.print_visor("Insira um valor antes de clicar em deposito")
 
 
 
