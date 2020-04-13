@@ -151,7 +151,7 @@ class TkGUI(tk.Tk):
         update_account=self.CONTA1
         dest_account=self.CONTA2
         API_ENDPOINT = "http://34.95.207.226/api/transaction/"
-        if self.TIPO == 'TRANSFER'
+        if self.TIPO == 'TRANSFER':
             if dest_account != update_account:
                 data = {'transaction': 'W', 'update_account': update_account, 'dest_account': dest_account, 'value': self.NUMBER}
                 r = requests.post(url=API_ENDPOINT, data=data)
