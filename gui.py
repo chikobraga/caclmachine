@@ -184,7 +184,7 @@ class TkGUI(tk.Tk):
             r = requests.post(url=API_ENDPOINT, data=data)
             if r.status_code == 201:
                 texto = str(self.NUMBER)
-                texto = "Deposito de $" + texto + " efetuada!"
+                texto = "Deposito de $" + texto + " efetuado!"
                 self.print_visor(texto)
                 self.CONTA1 = ''
                 self.CONTA2 = ''
